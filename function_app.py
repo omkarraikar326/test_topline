@@ -7,15 +7,12 @@ from io import BytesIO
 from datafile import summarize_data
 import pandas as pd
 
-app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
-
 # Azure Blob Storage Configuration
 CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=devnewsweekadls;AccountKey=27yFIzheCgRy+FpbtUAGmfm6tRuhgxyXjRsAiz7VuY4BGNpQcVfbJ7etekwG29dchJsIQ4Mb0jTr+AStYbuHxg==;EndpointSuffix=core.windows.net'"
 CONTAINER_NAME = "bronze"  # Azure Blob Storage container name
 BLOB_NAME = "topline_kpis/data.parquet"  # Blob name to store processed data
 
 def save_dataframe_to_azure(data, container_name, blob_name):
-    
     try:
         # Connect to Azure Blob Storage
         blob_service_client = BlobServiceClient.from_connection_string(CONNECTION_STRING)
@@ -37,10 +34,14 @@ def save_dataframe_to_azure(data, container_name, blob_name):
     except Exception as e:
         logging.error(f"Error saving DataFrame to Azure: {e}")
         return False
+    
+app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
+app = func.FunctionApp()  # Register the function app
 
-@app.route(route="http_trigger0", auth_level=func.AuthLevel.FUNCTION)
-def http_trigger0(req: func.HttpRequest) -> func.HttpResponse:
+@app.function_name(name="HttpTrigger")  # Ensure function is named properly
+@app.route(route="http_trigger", auth_level=func.AuthLevel.FUNCTION)
+def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
     try:
