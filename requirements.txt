@@ -12,3 +12,6 @@ numpy
 requests
 pyodbc
 sqlalchemy
+azure-identity
+azure-keyvault-secrets
+minify-html
