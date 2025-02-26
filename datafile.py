@@ -9,15 +9,15 @@ conn = pyodbc.connect(connection_string)
 
 # SQL Query to fetch latest data
 query = """
-SELECT * FROM prod_nw_lakehouse001.data
-WHERE Date = (SELECT MAX(Date) FROM prod_nw_lakehouse001.data)
+SELECT * FROM prod_nw_lakehouse001.gold_topline_kpi
+WHERE Date = (SELECT MAX(Date) FROM prod_nw_lakehouse001.gold_topline_kpi)
 """
 
 # Load data into Pandas DataFrame
 df = pd.read_sql(query, conn)
 
 # Close the connection
-#conn.close()
+conn.close()
 
 # Display Data
 print(df.head())
