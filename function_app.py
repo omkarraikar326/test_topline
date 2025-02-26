@@ -14,9 +14,6 @@ CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=devnewsweekadls;
 CONTAINER_NAME = "bronze"  # Azure Blob Storage container name
 BLOB_NAME = "topline_kpis/data.parquet"  # Blob name to store processed data
 
-# Initialize Azure Function App
-app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
-
 def save_dataframe_to_azure(data, container_name, blob_name):
     
     try:
