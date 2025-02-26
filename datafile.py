@@ -1,24 +1,23 @@
-import requests
+import pyodbc
 import pandas as pd
-from io import BytesIO
 
-# OneDrive file URL
-onedrive_url = "https://newsweek0-my.sharepoint.com/:x:/r/personal/o_raikar_newsweek_com/Documents/Azure%20Functions/Azure-Functions-Revenue%20and%20topline%20KPIs%20Newsweek%20Digital%20-%20Copy.xlsx?d=wf65f2d0f72b148f287aebe63eeddccc2&csf=1&web=1&e=ExcXlJ&nav=MTVfezA0OEU1REFFLTY5RUEtNENBOS05REZCLTY0NzMwOUVENUVFQ30"
+# Paste your SQL connection string here
+connection_string = "wu7lzrrt26be7oqcdktogact2m-qgj64uch2nfevir5hqdfapui7a.datawarehouse.fabric.microsoft.com"
 
-# Fetch the file
-response = requests.get(onedrive_url)
-response.raise_for_status()  # Ensure request is successful
+# Extract details from the connection string
+conn = pyodbc.connect(connection_string)
 
-# Read CSV or Excel file
-# df = pd.read_csv(BytesIO(response.content))  # For CSV
-df = pd.read_excel(BytesIO(response.content))  # For Excel
+# SQL Query to fetch latest data
+query = """
+SELECT * FROM prod_nw_lakehouse001.data
+WHERE Date = (SELECT MAX(Date) FROM prod_nw_lakehouse001.data)
+"""
 
-# Function to display dataset info and first few rows
-def summarize_data(data):
-    print("Dataset Info:")
-    print(data.info())
-    print("\nFirst 5 Rows:")
-    print(data.head())
+# Load data into Pandas DataFrame
+df = pd.read_sql(query, conn)
 
-# Call the function
-#summarize_data(df)
+# Close the connection
+#conn.close()
+
+# Display Data
+print(df.head())
