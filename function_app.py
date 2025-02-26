@@ -39,11 +39,10 @@ def save_dataframe_to_azure(data, container_name, blob_name):
         return False
 
 
-
 @app.route(route="http_trigger0", auth_level=func.AuthLevel.FUNCTION)
 def http_trigger0(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processing request.')
-
+    logging.info('Python HTTP trigger function processed a request.')
+    
     try:
         # Connect to Azure Blob Storage
         blob_service_client = BlobServiceClient.from_connection_string(CONNECTION_STRING)
