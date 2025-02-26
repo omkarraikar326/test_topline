@@ -1,11 +1,7 @@
 import azure.functions as func
 import logging
-import pyarrow as pa
-import pyarrow.parquet as pq
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
-from io import BytesIO
-from datafile import summarize_data
-import pandas as pd
+
+app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 # Azure Blob Storage Configuration
 CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=devnewsweekadls;AccountKey=27yFIzheCgRy+FpbtUAGmfm6tRuhgxyXjRsAiz7VuY4BGNpQcVfbJ7etekwG29dchJsIQ4Mb0jTr+AStYbuHxg==;EndpointSuffix=core.windows.net'"
@@ -41,8 +37,8 @@ def save_dataframe_to_azure(data, container_name, blob_name):
 
 
 
-@app.route(route="http_trigger1", auth_level=func.AuthLevel.FUNCTION)
-def http_trigger1(req: func.HttpRequest) -> func.HttpResponse:
+@app.route(route="http_trigger0", auth_level=func.AuthLevel.FUNCTION)
+def http_trigger0(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processing request.')
 
     try:
@@ -66,4 +62,3 @@ def http_trigger1(req: func.HttpRequest) -> func.HttpResponse:
     except Exception as e:
         logging.error(f"Error in HTTP trigger function: {e}")
         return func.HttpResponse(f"Internal server error: {e}", status_code=500)
-    
