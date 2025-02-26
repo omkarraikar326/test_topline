@@ -41,7 +41,7 @@ app = func.FunctionApp()  # Register the function app
 
 @app.function_name(name="HttpTrigger")  # Ensure function is named properly
 @app.route(route="http_trigger", auth_level=func.AuthLevel.FUNCTION)
-def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
+def HttpTrigger(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
     try:
