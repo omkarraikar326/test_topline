@@ -1,11 +1,20 @@
 import pyodbc
 import pandas as pd
 
-# Paste your SQL connection string here
-connection_string = "wu7lzrrt26be7oqcdktogact2m-qgj64uch2nfevir5hqdfapui7a.datawarehouse.fabric.microsoft.com"
+# Define connection parameters
+server = "wu7lzrrt26be7oqcdktogact2m-qgj64uch2nfevir5hqdfapui7a.datawarehouse.fabric.microsoft.com"
+database = "prod_nw_lakehouse001"  # Replace with actual database name
 
-# Extract details from the connection string
-conn = pyodbc.connect(connection_string)
+# Use Active Directory Interactive Authentication (prompts for login)
+conn_str = (
+    f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+    f"SERVER={server};"
+    f"DATABASE={database};"
+    f"Authentication=ActiveDirectoryInteractive;"
+)
+
+# Connect to SQL Server (triggers an authentication popup)
+conn = pyodbc.connect(conn_str)
 
 # SQL Query to fetch latest data
 query = """
